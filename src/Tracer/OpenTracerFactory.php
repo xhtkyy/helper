@@ -9,7 +9,7 @@ namespace Xhtkyy\Helper\Tracer;
 
 use Exception;
 
-class OpenTracerFactory implements Hyperf\Tracer\Contract\NamedFactoryInterface
+class OpenTracerFactory implements \Hyperf\Tracer\Contract\NamedFactoryInterface
 {
 
     /**
