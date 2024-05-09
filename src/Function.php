@@ -23,8 +23,11 @@ if (!function_exists('di')) {
 }
 
 if (!function_exists('struct_to_array')) {
-    function struct_to_array(Struct|Message $struct): array
+    function struct_to_array(Struct|Message|null $struct): array
     {
+        if (!$struct) {
+            return [];
+        }
         return $struct instanceof Struct ? json_decode($struct->serializeToJsonString(), true) : message_to_array($struct);
     }
 }
@@ -73,6 +76,10 @@ if (!function_exists('array_to_struct')) {
 if (!function_exists("repeated_field_to_array")) {
     function repeated_field_to_array(\Google\Protobuf\Internal\RepeatedField $repeatedField, array|string|null $fields = null): array
     {
+        if ($repeatedField->getType() !== \Google\Protobuf\Internal\GPBType::MESSAGE) {
+            return iterator_to_array($repeatedField);
+        }
+
         $fields && !is_array($fields) && $fields = explode(',', $fields);
         return map(iterator_to_array($repeatedField), function (Message|Struct $item) use ($fields) {
             return !$fields ? struct_to_array($item) : array_intersect_key(struct_to_array($item), array_flip($fields));
