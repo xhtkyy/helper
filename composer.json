@@ -13,7 +13,8 @@
             "Xhtkyy\\Helper\\": "src/"
         },
         "files": [
-            "src/Function.php"
+            "src/Function.php",
+            "src/Functions.php"
         ]
     },
     "autoload-dev": {
