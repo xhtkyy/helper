@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @param string $ip
  * @return bool
  */
-function verifyIpv4(string $ip): bool {
+function verifyIpv4(string $ip): mixed {
     return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
 }
 
