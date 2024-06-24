@@ -17,8 +17,7 @@ interface EncipherInterface {
 
     /**
      * @param string $encrypted 密文
-     * @param int $length 密文分词规则字符数量
      * @return string 明文
      */
-    public function decrypt(string $encrypted, int $length): string;
+    public function decrypt(string $encrypted): string;
 }
