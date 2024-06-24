@@ -27,7 +27,8 @@
         "google/protobuf": "^3.25",
         "guzzlehttp/guzzle": "^7.8",
         "hyperf/di": "3.0.*",
-        "hyperf/logger": "^3.0.0"
+        "hyperf/logger": "^3.0.0",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
