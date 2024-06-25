@@ -31,7 +31,7 @@ class AesEncipher implements EncipherInterface {
             return '';
         }
         if (!$length || $len <= $length) {
-            return openssl_encrypt($plaintext, $this->encipher_algo, $this->encipher_secret, 0, $this->encipher_iv);
+            return ($withPrefix ? '@@' : '') . openssl_encrypt($plaintext, $this->encipher_algo, $this->encipher_secret, 0, $this->encipher_iv);
         }
         for ($i = 0; $i <= $len - $length; $i++) {
             $groups[] = openssl_encrypt(mb_substr($plaintext, $i, $length), $this->encipher_algo, $this->encipher_secret, 0, $this->encipher_iv);
