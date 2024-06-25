@@ -41,7 +41,7 @@ namespace Xhtkyy\Helper\Encipher {
 
     use Hyperf\Context\ApplicationContext;
 
-    function encrypt(string $plaintext, int $length): string {
+    function encrypt(string $plaintext, ?int $length = null, bool $withPrefix = true): string {
         if (!ApplicationContext::hasContainer()) {
             throw new \RuntimeException('The application context lacks the container.');
         }
@@ -52,10 +52,10 @@ namespace Xhtkyy\Helper\Encipher {
             throw new \RuntimeException('EncipherInterface is missing in container.');
         }
 
-        return $container->get(EncipherInterface::class)->encrypt($plaintext, $length);
+        return $container->get(EncipherInterface::class)->encrypt($plaintext, $length, $withPrefix);
     }
 
-    function decrypt(string $encrypted): string {
+    function decrypt(string $encrypted, bool $withPrefix = true): string {
         if (!ApplicationContext::hasContainer()) {
             throw new \RuntimeException('The application context lacks the container.');
         }
@@ -66,6 +66,14 @@ namespace Xhtkyy\Helper\Encipher {
             throw new \RuntimeException('EncipherInterface is missing in container.');
         }
 
-        return $container->get(EncipherInterface::class)->decrypt($encrypted);
+        return $container->get(EncipherInterface::class)->decrypt($encrypted, $withPrefix);
+    }
+
+    function encrypt_without_prefix(string $plaintext, ?int $length = null): string {
+        return encrypt($plaintext, $length, false);
+    }
+
+    function decrypt_without_prefix(string $plaintext): string {
+        return decrypt($plaintext, false);
     }
 }

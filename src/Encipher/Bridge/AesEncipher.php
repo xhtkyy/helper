@@ -17,27 +17,41 @@ class AesEncipher implements EncipherInterface {
     /**
      * 加密
      * @param string $plaintext
-     * @param int $length
+     * @param int|null $length
+     * @param bool $withPrefix
      * @return string
      */
-    public function encrypt(string $plaintext, int $length): string {
+    public function encrypt(string $plaintext, ?int $length = null, bool $withPrefix = true): string {
+        if ($withPrefix && mb_substr($plaintext, 0, 2) == '@@') {
+            return $plaintext;
+        }
         $groups = [];
         $len    = mb_strlen($plaintext);
-        if ($len <= $length) {
+        if ($len == 0) {
+            return '';
+        }
+        if (!$length || $len <= $length) {
             return openssl_encrypt($plaintext, $this->encipher_algo, $this->encipher_secret, 0, $this->encipher_iv);
         }
         for ($i = 0; $i <= $len - $length; $i++) {
             $groups[] = openssl_encrypt(mb_substr($plaintext, $i, $length), $this->encipher_algo, $this->encipher_secret, 0, $this->encipher_iv);
         }
-        return implode($this->encipher_delimiter, $groups);
+        return ($withPrefix ? '@@' : '') . implode($this->encipher_delimiter, $groups);
     }
 
     /**
      * 解密
      * @param string $encrypted
+     * @param bool $withPrefix
      * @return string
      */
-    public function decrypt(string $encrypted): string {
+    public function decrypt(string $encrypted, bool $withPrefix = true): string {
+        if ($withPrefix) {
+            if (mb_substr($encrypted, 0, 2) != '@@') {
+                return $encrypted;
+            }
+            $encrypted = mb_substr($encrypted, 2);
+        }
         $plaintext = '';
         foreach (array_filter(explode($this->encipher_delimiter, $encrypted)) as $key => $encryptedGroup) {
             // 对每个分组进行解密
