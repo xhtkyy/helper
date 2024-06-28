@@ -16,12 +16,18 @@ class AesEncipher implements EncipherInterface {
 
     /**
      * 加密
-     * @param string $plaintext
+     * @param string|null $plaintext
      * @param int|null $length
      * @param bool $withPrefix
-     * @return string
+     * @return string|null
      */
-    public function encrypt(string $plaintext, ?int $length = null, bool $withPrefix = true): string {
+    public function encrypt(?string $plaintext, ?int $length = null, bool $withPrefix = true): ?string {
+        if ($plaintext === null) {
+            return null;
+        }
+        if ($plaintext == '') {
+            return '';
+        }
         if ($withPrefix && mb_substr($plaintext, 0, 2) == '@@') {
             return $plaintext;
         }
@@ -41,11 +47,17 @@ class AesEncipher implements EncipherInterface {
 
     /**
      * 解密
-     * @param string $encrypted
+     * @param string|null $encrypted
      * @param bool $withPrefix
-     * @return string
+     * @return string|null
      */
-    public function decrypt(string $encrypted, bool $withPrefix = true): string {
+    public function decrypt(?string $encrypted, bool $withPrefix = true): ?string {
+        if ($encrypted === null) {
+            return null;
+        }
+        if ($encrypted == '') {
+            return '';
+        }
         if ($withPrefix) {
             if (mb_substr($encrypted, 0, 2) != '@@') {
                 return $encrypted;
