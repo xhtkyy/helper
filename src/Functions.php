@@ -77,3 +77,14 @@ namespace Xhtkyy\Helper\Encipher {
         return decrypt($plaintext, false);
     }
 }
+
+namespace Xhtkyy\Helper\Sql {
+    function like_filter(string $value, int $mode = 0): string {
+        $value = str_replace('%', '[%]', $value);
+        return match ($mode) {
+            0 => "%{$value}%",
+            1 => "%{$value}",
+            2 => "{$value}%",
+        };
+    }
+}
