@@ -132,3 +132,22 @@ if (!function_exists("check_db_connect")) {
         }
     }
 }
+
+
+if (!function_exists('unification_env')) {
+    /**
+     * 获取环境配置
+     * @param string $unifiedKey 统一key
+     * @param string $originalKey 框架或组件原定义key
+     * @param mixed $default 默认值
+     * @return array|bool|mixed|string|null
+     * @example unification_env('MYSQL_HOST','DB_HOST', 'localhost');
+     */
+    function unification_env(string $unifiedKey, string $originalKey, mixed $default = null): mixed {
+        $value = \Hyperf\Support\env($unifiedKey);
+        if ($value === null) {
+            $value = \Hyperf\Support\env($originalKey, $default);
+        }
+        return $value;
+    }
+}
